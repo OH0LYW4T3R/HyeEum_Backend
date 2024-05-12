@@ -1,7 +1,6 @@
 from .models import *
 from rest_framework import serializers
 
-
 class StatisticsSerializer(serializers.ModelSerializer): # ModelSerializer를 써야한다.
     class Meta:
         model = Statistics

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from ..models import User, Library
+from ..models import User, Library, Statistics
 from ..serializers import UserSerializer
 # Create your views here.
 
@@ -39,9 +39,12 @@ class UserViewSet(viewsets.ModelViewSet):
         # Create Library
         instance = User.objects.filter(user_tag=tag_id)
         if instance.exists(): 
-            Library.objects.create(user_id=instance[0])
+            library_instance = Library.objects.create(user_id=instance[0])
             library_count = instance[0].library_count + 1
             instance.update(library_count=library_count)
+
+            # Create Statistics
+            Statistics.objects.create(library_id = library_instance)
         else: Response({"Error : Not Found Tag"}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({"Success : Create User"}, status=status.HTTP_201_CREATED, headers=headers)

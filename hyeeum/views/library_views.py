@@ -37,10 +37,11 @@ class LibraryViewSet(viewsets.ModelViewSet):
     
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        print(instance.user_id.id)
+    
         user_instance = User.objects.filter(id=instance.user_id.id)
         library_count = user_instance[0].library_count
         if library_count > 0: user_instance.update(library_count=library_count-1)
+
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
         
