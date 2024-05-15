@@ -20,7 +20,7 @@ class Library(models.Model):
     book_count = models.IntegerField(default=0)
 
 def upload_to_image(instance, filename):
-    return f'{instance.library_id.user_id.user_name}/{instance.library_id.id}/{filename}'
+    return f'{instance.library_id.user_id.id}/{instance.library_id.id}/{filename}'
 
 class Book(models.Model):
     EMOTIONS = [

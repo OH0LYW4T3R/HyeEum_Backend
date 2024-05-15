@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework.routers import DefaultRouter
+
 from hyeeum.views.user_views import UserViewSet
 from hyeeum.views.library_views import LibraryViewSet
 from hyeeum.views.book_views import BookViewSet
 from hyeeum.views.statistics_views import StatisticsViewSet
+from hyeeum.GenerativeAI.gpt_views import *
+from hyeeum.GenerativeAI.dalle_views import *
 
 class OptionalSlashRouter(DefaultRouter): # trailing slash remove
     def __init__(self):
@@ -37,6 +40,10 @@ router.register(r'statistics', StatisticsViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('/', include(router.urls)),
+    path('nickname', nickname_generation, name="nickname_generation_endpoint"),
+    path('question-generation', question_generation, name="question_generation_endpoint"),
+    path('emotion-generation', emotion_generation, name="emotion_generation_endpoint"),
+    path('image-generation', image_generation, name="image_generation_endpoint"),
 ]
 
 urlpatterns += router.urls
