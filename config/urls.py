@@ -26,6 +26,10 @@ from hyeeum.views.statistics_views import StatisticsViewSet
 from hyeeum.GenerativeAI.gpt_views import *
 from hyeeum.GenerativeAI.dalle_views import *
 
+from django.views.static import serve
+from django.urls import re_path
+from django.conf import settings
+
 class OptionalSlashRouter(DefaultRouter): # trailing slash remove
     def __init__(self):
         super().__init__()
@@ -44,6 +48,7 @@ urlpatterns = [
     path('question-generation', question_generation, name="question_generation_endpoint"),
     path('emotion-generation', emotion_generation, name="emotion_generation_endpoint"),
     path('image-generation', image_generation, name="image_generation_endpoint"),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
 ]
 
 urlpatterns += router.urls
