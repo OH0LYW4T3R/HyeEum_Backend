@@ -155,6 +155,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # Cors Setting
 CORS_ALLOW_METHODS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Media Setting
 MEDIA_URL = '/media/'
