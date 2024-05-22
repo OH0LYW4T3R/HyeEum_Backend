@@ -47,7 +47,7 @@ class UserViewSet(viewsets.ModelViewSet):
             Statistics.objects.create(library_id = library_instance)
         else: Response({"Error : Not Found Tag"}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response({"Success : Create User"}, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
     # 세부 조회
     def retrieve(self, request, *args, **kwargs):
