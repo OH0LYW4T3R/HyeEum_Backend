@@ -3,13 +3,15 @@ import openai
 from openai import OpenAI
 from config import settings
 
+GPT_MODEL = "gpt-3.5-turbo"
+
 def getGPTAPI(user_content, order, alignment="", cnt=0):
     try:
         if order == 1: # 닉네임 생성
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
             contents = user_content + "\n Q는 질문이고 A는 답변이야 내용을 읽고 판단하여 {'alignment' : '이사람의 성향을 한줄로 표현', 'nickname' : '성향과 내용으로 이 사람에게 어울리는 한글닉네임 5개'}를 생성해줘"
             chat_completion = client.chat.completions.create(
-                model="gpt-4",
+                model=GPT_MODEL,
                 messages=[
                     {
                         "role": "user",
@@ -59,7 +61,7 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
             contents = user_content + "\n Q는 질문이고 A는 답변이야 내용을 읽어 보고 "+ " 너는 지금부터 이 사람과 대화하는 사람이야, 이 사람이 다음에 말하기 편하도록 대화를 이어가줘 그럼요, 그럼 같은 내가 시키는거에 대답하는 단어는 쓰지마 Q. 다음 대화 생성 형식으로 보내줘"
             chat_completion = client.chat.completions.create(
-                model="gpt-4",
+                model=GPT_MODEL,
                 messages=[
                 {
                     "role": "user",
@@ -97,7 +99,7 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
             contents = user_content + "\n Q는 질문이고 A는 답변이야 이 사람의 성향은" + alignment + "이고 다음 내용을 읽고 이 사람의 {'emotion': '감정[기쁨,화남,슬픔,즐거움]중 내용을 읽고 판단하여 택1', 'consolation': '위로의 말'} 이 형식으로 생성해줘, 답변에는 성향을 파악하는 얘기를 절대 하지마, 형식 꼭 맞춰줘"
             chat_completion = client.chat.completions.create(
-                model="gpt-4",
+                model=GPT_MODEL,
                 messages=[
                     {
                         "role": "user",
@@ -148,7 +150,7 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
             contents = user_content + "\n Q는 질문이고 A는 답변이야, 사용자의 감정 빈도가 이렇다고 했을 때, 내용과 연계하여 이번주는 어땟는지 코멘트 남겨줘 형식은 Comment : 할말 으로 해줘"
             chat_completion = client.chat.completions.create(
-                model="gpt-4",
+                model=GPT_MODEL,
                 messages=[
                     {
                         "role": "user",
