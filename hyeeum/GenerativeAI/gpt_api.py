@@ -57,7 +57,7 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
         # 내용을 듣고 다음 질문 생성하기
         elif order == 2: # GPT 질문 문구 생성
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
-            contents = user_content + "\n Q는 질문이고 A는 답변이야 내용을 읽는데 "+ "이 사람의 성향은 " + alignment + "야 이 성향도 고려해서 다음 질문을 대화를 이끌어갈 짧은 한문장으로 생성해줘 Q. 다음 질문 생성 형식으로 보내줘 답변에는 성향에 대한 말을 절대 넣지 마"
+            contents = user_content + "\n Q는 질문이고 A는 답변이야 내용을 읽어 보고 "+ " 너는 지금부터 이 사람과 대화하는 사람이야, 이 사람이 다음에 말하기 편하도록 대화를 이어가줘 그럼요, 그럼 같은 내가 시키는거에 대답하는 단어는 쓰지마 Q. 다음 대화 생성 형식으로 보내줘"
             chat_completion = client.chat.completions.create(
                 model="gpt-4",
                 messages=[
@@ -71,17 +71,20 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
                     ]
                 }],
                 max_tokens=200,
-                temperature=0.5
+                temperature=1
             )
 
             get_message = chat_completion.choices[-1].message.content
-            print(2)
-            print(get_message)
+
             s = ''
             for i, ch in enumerate(get_message):
                 if i-2 >= 0 and ch == ' ' and get_message[i-1] == '.' and get_message[i-2] == 'Q':
                     s = ''
+                elif i-2 >= 0 and ch == ' ' and get_message[i-1] == '.' and get_message[i-2] == 'A':
+                    s = ''
                 elif i-1 >= 0 and ch == '.' and get_message[i-1] == 'Q':
+                    s = ''
+                elif i-1 >= 0 and ch == '.' and get_message[i-1] == 'A':
                     s = ''
                 else:
                     s += ch
