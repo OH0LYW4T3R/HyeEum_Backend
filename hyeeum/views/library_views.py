@@ -25,7 +25,7 @@ class LibraryViewSet(viewsets.ModelViewSet):
     serializer_class = LibrarySerializer
 
     def list(self, request, *args, **kwargs):
-        instance = User.objects.filter(user_tag=request.data.get('user_tag'))
+        instance = User.objects.filter(user_tag=request.query_params.get('user_tag'))
 
         if instance.exists(): 
             queryset = Library.objects.filter(user_id=instance[0].id)
