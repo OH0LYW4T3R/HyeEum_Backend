@@ -34,6 +34,7 @@ def nickname_generation(request):
 def question_generation(request):
     qna_string = request.data.get("qna_string")
     alignment = request.data.get("alignment")
+    polite = request.data.get("polite")
     result = {"question" : getGPTAPI(qna_string, 2, alignment=alignment)}
 
     return Response(result, status=status.HTTP_200_OK)
@@ -42,6 +43,7 @@ def question_generation(request):
 def emotion_generation(request):
     qna_string = request.data.get("qna_string")
     alignment = request.data.get("alignment")
+    polite = request.data.get("polite")
     result = key_value(getGPTAPI(qna_string, 3, alignment=alignment))
 
     return Response(result, status=status.HTTP_200_OK)
