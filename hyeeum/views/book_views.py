@@ -69,7 +69,7 @@ def save_image_from_url(image_url, file_name):
         return None
 
 # 책 최대 개수
-MAX_BOOK_COUNT = 2
+MAX_BOOK_COUNT = 5
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()

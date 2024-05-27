@@ -59,7 +59,7 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
         # 내용을 듣고 다음 질문 생성하기
         elif order == 2: # GPT 질문 문구 생성
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
-            contents = user_content + "\n Q는 질문이고 A는 답변이야 내용을 읽어 보고 "+ " 너는 지금부터 이 사람과 대화하는 사람이야, 이 사람이 다음에 말하기 편하도록 대화를 이어가줘 그럼요, 그럼 같은 내가 시키는거에 대답하는 단어는 쓰지마 Q. 다음 대화 생성 형식으로 보내줘"
+            contents = user_content + "\n Q는 질문이고 A는 답변이야 내용을 읽어 보고 "+ "지금부터 질문만 해야해. 유저가 다음에 말하기 편하도록 대화를 이어가줘. '그럼요, 그럼' 같은 내가 시키는거에 대답하는 단어는 쓰면 안돼. 자문자답 또한 금지야. 말은 항상 존댓말로 할 것. 반환 값은 A에 대한 대답을 생성해줘. 대답은 평문이고, Q: 혹은 A: 같은 형식 붙이지 마. 글자수는 반환 값의 글자수는 20글자로 제한할게."
             chat_completion = client.chat.completions.create(
                 model=GPT_MODEL,
                 messages=[
@@ -82,15 +82,22 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
             for i, ch in enumerate(get_message):
                 if i-2 >= 0 and ch == ' ' and get_message[i-1] == '.' and get_message[i-2] == 'Q':
                     s = ''
+                elif i-2 >= 0 and ch == ' ' and get_message[i-1] == ':' and get_message[i-2] == 'Q':
+                    s = ''
+                elif i-2 >= 0 and ch == ' ' and get_message[i-1] == ':' and get_message[i-2] == 'A':
+                    s = ''
                 elif i-2 >= 0 and ch == ' ' and get_message[i-1] == '.' and get_message[i-2] == 'A':
                     s = ''
                 elif i-1 >= 0 and ch == '.' and get_message[i-1] == 'Q':
+                    s = ''
+                elif i-1 >= 0 and ch == ':' and get_message[i-1] == 'Q':
+                    s = ''
+                elif i-1 >= 0 and ch == ':' and get_message[i-1] == 'A':
                     s = ''
                 elif i-1 >= 0 and ch == '.' and get_message[i-1] == 'A':
                     s = ''
                 else:
                     s += ch
-
 
             return s
 
