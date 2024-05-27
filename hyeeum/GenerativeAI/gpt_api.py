@@ -59,7 +59,8 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
         # 내용을 듣고 다음 질문 생성하기
         elif order == 2: # GPT 질문 문구 생성
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
-            contents = user_content + "\n Q는 질문이고 A는 답변이야 내용을 읽어 보고 "+ "지금부터 질문만 해야해. 유저가 다음에 말하기 편하도록 대화를 이어가줘. '그럼요, 그럼' 같은 내가 시키는거에 대답하는 단어는 쓰면 안돼. 자문자답 또한 금지야. 말은 항상 존댓말로 할 것. 반환 값은 Q. 대답으로 생성해줘. 대답은 평문이고, A: 같은 형식 붙이지 마. 글자수는 반환 값의 글자수는 20글자로 제한할게."
+            # order 2에선 alignment에 존댓말, 반말 정보가 들어가도록
+            contents = user_content + "\n Q는 질문이고 A는 답변이야 내용을 읽어 보고 Q. 형식으로 출력해줘  " + f"1. 지금부터 질문만 해야해. 유저가 다음에 말하기 편하도록 대화를 이어가줘 \n 2. '그럼요, 그럼' 같은 내가 시키는거에 대답하는 단어는 쓰면 안돼 \n 3. 자문자답 또한 금지야 \n 4. 말은 항상 {alignment}로 할 것 \n 5. 대답은 평문이고, A: 같은 형식 붙이지 말 것 \n 6. 글자수는 반환 값의 글자수는 20글자로 제한할게"
             chat_completion = client.chat.completions.create(
                 model=GPT_MODEL,
                 messages=[
@@ -154,7 +155,7 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
         #emotion, 위로의 말 생성
         elif order == 3:
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
-            contents = user_content + "\n Q는 질문이고 A는 답변이야 이 사람의 성향은" + alignment + "이고 다음 내용을 읽고 이 사람의 {'emotion': '감정[기쁨,화남,슬픔,즐거움]중 내용을 읽고 판단하여 택1', 'consolation': '위로의 말'}생성해줘. 답변에는 성향에 대한 말을 절대 넣지 마. 대답은 평문이고 말은 항상 존댓말로 해."
+            contents = user_content + "\n Q는 질문이고 A는 답변이야 다음 내용을 읽고 판단하여 emotion과 consolation을 출력해줘 1. 이 사람의 성향은 " + alignment + "이야. \n 2. 답변 형식은 {emotion : 감정(기쁨, 화남, 슬픔, 즐거움 중 내용과 관련하여 택1, consolation : 위로의 한마디 생성} \n 4. 답변에는 성향에 대한 내용을 절대 넣지 마 \n 5. 대답은 평문으로 할 것"
             chat_completion = client.chat.completions.create(
                 model=GPT_MODEL,
                 messages=[
@@ -190,17 +191,27 @@ def getGPTAPI(user_content, order, alignment="", cnt=0):
                         if get_message[j] not in "emotion":
                             break
                     s += ch
+                elif i + 1 < len(get_message) and get_message[i] == 'E' and get_message[i + 1] == 'm':
+                    for j in range(i, len(get_message)):
+                        if get_message[j] not in "Emotion":
+                            break
+                    s += ch.lower()
                 elif i + 1 < len(get_message) and get_message[i] == 'c' and get_message[i + 1] == 'o':
                     for j in range(i, len(get_message)):
                         if get_message[j] not in "consolation":
                             break
                     s += '\n'
                     s += ch
+                elif i + 1 < len(get_message) and get_message[i] == 'C' and get_message[i + 1] == 'o':
+                    for j in range(i, len(get_message)):
+                        if get_message[j] not in "Consolation":
+                            break
+                    s += '\n'
+                    s += ch.lower()
                 else:
                     s += ch
 
             return s
-
 
         elif order == 4:
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
