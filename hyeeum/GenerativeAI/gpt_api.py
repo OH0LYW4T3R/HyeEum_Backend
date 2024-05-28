@@ -58,7 +58,7 @@ def getGPTAPI(user_content, order, alignment="", cnt=0, polite=""):
 
         elif order == 2: # GPT 질문 문구 생성
             client = openai.OpenAI(api_key=settings.get_env_variable('API_KEY'))
-            contents = user_content + '\n Q는 질문이고, A는 답변이다. \n 대화의 문맥을 파악하여 질문을 생성하라.\n 단 응답은 "Q. 질문" 형식으로 할 것이며,' + polite + '체로 질문을 생성하라'
+            contents = user_content + '\n Q는 질문이고, A는 답변이다. \n 대화의 문맥을 파악하여 창의적이고 포괄적으로 질문을 생성하라.\n 단 응답은 "Q. 질문" 형식으로 할 것이며, 질문의 형식은 의문문이다. 또한, ' + polite + '체로 질문을 생성하라'
             chat_completion = client.chat.completions.create(
                 model=GPT_MODEL,
                 messages=[
