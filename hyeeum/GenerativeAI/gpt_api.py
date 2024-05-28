@@ -3,7 +3,7 @@ import openai
 from openai import OpenAI
 from config import settings
 
-GPT_MODEL = "gpt-3.5-turbo"
+GPT_MODEL = "gpt-4o"
 
 def getGPTAPI(user_content, order, alignment="", cnt=0, polite=""):
     try:
